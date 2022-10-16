@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 function App() {
+  const [joke, setJoke] = useState({});
+
+  useEffect(() => {
+    axios
+      .get("https://api.jokes.one/jod")
+      .then((response) => {
+        setJoke(response.data.contents.jokes[0].joke);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Joke of the day with Axios</h1>
+      <h3>{joke.title}</h3>
+      <p>{joke.text}</p>
     </div>
   );
 }
